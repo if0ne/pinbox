@@ -1,3 +1,9 @@
+mod category;
+mod cmd;
+mod config;
+mod pin;
+mod source;
+
 fn main() {
-    println!("Hello, world!");
+    cmd::Cmd::run();
 }
