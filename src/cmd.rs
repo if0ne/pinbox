@@ -19,7 +19,10 @@ impl Cmd {
 
         match cli.command {
             Commands::Config { key, value } => {
-                config::process_config_cmd(key, value).expect("Failed to process cmd config");
+                let _ =
+                    config::process_config_cmd(key, value).inspect_err(|e| {
+                        println!("failed to process cmd config: {}", e)
+                    });
             }
             Commands::Pin { category, content } => {}
             Commands::Add { command } => match command {
