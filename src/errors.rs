@@ -22,4 +22,15 @@ pub enum CliError {
 
     #[error("failed to parse url from string: {0}")]
     WrongUrlFormat(url::ParseError),
+
+    #[error(
+        "repository not set, please use pinbox config git.repository <url>"
+    )]
+    RepositoryNotSet,
+
+    #[error("failed to clone repository: {0}")]
+    CloneRepo(git2::Error),
+
+    #[error("failed to open repository: {0}")]
+    OpenRepo(git2::Error),
 }

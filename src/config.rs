@@ -5,6 +5,12 @@ use url::Url;
 
 use crate::{errors::CliError, APP_NAME};
 
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub struct Config {
+    pub repository: Option<Url>,
+    pub token: Option<String>,
+}
+
 pub fn process_config_cmd(
     key: impl AsRef<str>,
     value: impl ToString,
@@ -51,16 +57,10 @@ pub fn load_config(path: impl AsRef<Path>) -> Result<Config, CliError> {
     Ok(config)
 }
 
-fn get_config_path() -> Result<PathBuf, CliError> {
+pub fn get_config_path() -> Result<PathBuf, CliError> {
     let config_dir = dirs::config_dir().ok_or(CliError::HomeDirNotFound)?;
-    let app_config_dir = config_dir.join(APP_NAME); // Название приложения
+    let app_config_dir = config_dir.join(APP_NAME);
     std::fs::create_dir_all(&app_config_dir).map_err(CliError::CreatingDirs)?;
 
     Ok(app_config_dir.join("config.toml"))
-}
-
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct Config {
-    pub repository: Option<Url>,
-    pub token: Option<String>,
 }
